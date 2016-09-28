@@ -28,13 +28,44 @@ class Main_Handler(BlogHandler):
         self.render_front()
 
 
+class Post(db.Model):
+    subject = db.StringProperty(required=True)
+    content = db.TextProperty(required=True)
+    created = db.DateTimeProperty(auto_now_add=True)
+    last_modified = db.DateTimeProperty(auto_now = True)
+
+
+class Add_Post(Main_Handler):
+    def get(self):
+        self.render("newpost.html")
+
+    def post(self):
+        subject = self.request.get("subject")
+        content = self.request.get("content")
+
+        if subject and content:
+            p = Post(subject = subject , content = content)
+            p.put()
+            self.redirect("/blog")
+        else:
+
+            error = "We need both a subject and content"
+            self.render_front(subject , content , error)
 
 
 
 
+class ViewPostHandler(Main_Handler):
+    def get(self, id):
+        add_num = int(id)
+        added_num = Post.get_by_id(add_num)
 
+        if added_num:
+            self.render("post.html", added_num = added_num)
 
-
+        else:
+            self.response.out.write("Error!")
+            return
 
 
 
@@ -45,4 +76,6 @@ class Main_Handler(BlogHandler):
 
 app = webapp2.WSGIApplication([
     ('/blog', Main_Handler),
+    ('/newpost', Add_Post),
+    webapp2.Route('/blog/<id:\d+>', ViewPostHandler)
     ], debug=True)
