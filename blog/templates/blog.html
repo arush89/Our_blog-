@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% blogpost %}
+<html>
+    <head>
+    <title>Our space</title>
+</head>
+
+<body>
+    <div class="main-title">
+        <a href="/blog/{{post.key().id()}}">{{p.content}}</a>
+
+    </div>
+
+    <div id="content">
+    {% block content %}
+    {% endblock %}
+    </div>
+</body>
+
+</html>
