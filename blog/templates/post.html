@@ -1,14 +1,12 @@
-{% extends "base.html" %}
-{% block blogpost %}
-    <div class="post">
-        <div class="post-heading">
-        </div>
-            <div class="post-title">
-                {{added_num.subject}}
-            </div>
+{% extends 'base.html' %}
 
-        <div class= "post-subject">
-            {{added_num.content}}
-        </div>
-    </div>
+{% block content %}
+
+<h2 class="post-title">{{ post.title }}</h2>
+<p class="post-body">{{ post.body }}</p>
+<li><a href="/blog/{{ post.key().id() }}">{{ post.author.username  }}</a></li>
+<p class="post-author">
+    written on {{ post.created.strftime('%Y-%m-%d') }}
+</p>
+
 {% endblock %}

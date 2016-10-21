@@ -1,57 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    background-color: #FFE4C4;
-    border: 1px solid #555;
-}
+  <title>Our blog</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+    .row.content {height: 300px}
+    font-family: Broadway ;
 
-li a {
-    display: block;
-    color: #000;
-    padding: 8px 16px;
-    text-decoration: none;
-}
+    /* Set gray background color and 100% height */
+    .sidenav {
+      background-color:#FFE4C4 ;
+      height: 100%;
+    }
 
-li {
-    text-align: center;
-    border-bottom: 1px solid #555;
-}
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #4CAF50;
+      color: gray;
+      padding: 15px;
+    }
 
-li:last-child {
-    border-bottom: none;
-}
-
-li a.active {
-    background-color: #4CAF50;
-    color: white;
-}
-
-li a:hover:not(.active) {
-    background-color: #555;
-    color: white;
-}
-</style>
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height: auto;}
+    }
+  </style>
 </head>
 <body>
-            <ul>
-                <li class = "active"><a href="/">Home</a></li>
-                <li><a href="/blog">All posts</a></li>
-                <li><a href="/blog/newpost">New post</a></li>
-                <li><a href="/login">Login</a></li>
-                <li><a href="/logout">Logout</a></li>
-                <li><a href="/signup">Signup</a></li>
-            </ul>
-        </nav>
 
-        <link type="text/css" rel="stylesheet" href="/static/style.css" />
+<div class="container-fluid">
+  <div class="row content">
+    <div class="col-sm-3 sidenav">
+        <ul class="nav nav-pills nav-stacked">
+            <li class = "active"><a href="/">Home</a></li>
+            <li><a href="/blog">All posts</a></li>
+            <li><a href="/blog/newpost">Add a post</a></li>
+            <li><a href="/login">Login</a></li>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="/signup">Signup</a></li>
+        </ul><br>
+      </div>
 
-        {% block content %}
-        {% endblock %}
-    </body>
-</html>
+      <div class="col-sm-9">
+          <link type="text/css" rel="stylesheet" href="/static/style.css" />
+      </body>
+  </html>
+          {% block content %}
+          {% endblock %}

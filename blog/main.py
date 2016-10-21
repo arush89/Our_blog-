@@ -9,7 +9,7 @@ jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), a
 class BlogHandler(webapp2.RequestHandler):
     """ Utility class for gathering various useful methods that are used by most request handlers """
 
-    def get_posts(self, limit, offset):
+    def get_posts(self,limit, offset):
         """ Get all posts ordered by creation date (descending) """
         query = Post.all().order('-created')
         return query.fetch(limit=limit, offset=offset)
@@ -22,7 +22,7 @@ class BlogHandler(webapp2.RequestHandler):
         query = Post.all().filter('author =', user)
 
         # TODO - filter the query so that only posts by the given user
-        return query.fetch(limit = 5)
+        return query.fetch(limit = limit)
 
     def get_user_by_name(self, username):
         """ Get a user object from the db, based on their username """
@@ -73,7 +73,7 @@ class IndexHandler(BlogHandler):
 class BlogIndexHandler(BlogHandler):
 
     # number of blog posts per page to display
-    page_size = 5
+    page_size = 20
 
     def get(self, username=""):
         """ """
@@ -145,48 +145,48 @@ class NewPostHandler(BlogHandler):
             id = post.key().id()
             self.redirect("/blog/%s" % id)
         else:
-            error = "we need both a title and a body!"
+            error = "we need both a title and a post!"
             self.render_form(title, body, error)
 
 class ViewPostHandler(BlogHandler):
-
+# this is what allows the permalinks to work once I go to the /blog
     def get(self, id):
-        """ Render a page with post determined by the id (via the URL/permalink) """
 
+# Had problems fixed the response = t.render to the right name in the post.html(add_num = post,id=id)
         post = Post.get_by_id(int(id))
         if post:
             t = jinja_env.get_template("post.html")
             response = t.render(post=post)
         else:
             error = "there is no post with id %s" % id
-            t = jinja_env.get_template("404.html")
+            t = jinja_env.get_template("Error.html")
             response = t.render(error=error)
 
         self.response.out.write(response)
 
 class SignupHandler(BlogHandler):
-
+#done from signup
     def validate_username(self, username):
         USER_RE = re.compile(r"^[a-zA-Z0-9_-]{3,20}$")
         if USER_RE.match(username):
             return username
         else:
             return ""
-
+#like in build a blog sets the requirements
     def validate_password(self, password):
         PWD_RE = re.compile(r"^.{3,20}$")
         if PWD_RE.match(password):
             return password
         else:
             return ""
-
+            #verifys the password
     def validate_verify(self, password, verify):
         if password == verify:
             return verify
 
     def validate_email(self, email):
 
-        # allow empty email field
+        # allows empty email field to happen
         if not email:
             return ""
 
@@ -201,11 +201,7 @@ class SignupHandler(BlogHandler):
 
     def post(self):
         """
-            Validate submitted data, creating a new user if all fields are valid.
-            If data doesn't validate, render the form again with an error.
-            This code is essentially identical to the solution to the Signup portion
-            of the Formation assignment. The main modification is that we are now
-            able to create a new user object and store it when we have valid data.
+            Able to create a new user object and store it when we have valid data.
         """
 
         submitted_username = self.request.get("username")
@@ -257,8 +253,6 @@ class SignupHandler(BlogHandler):
             self.redirect('/blog/newpost')
 
 class LoginHandler(BlogHandler):
-
-    # TODO - The login code here is mostly set up for you, but there isn't a template to log in
 
     def render_login_form(self, error=""):
         """ Render the login form with or without an error, based on parameters """
