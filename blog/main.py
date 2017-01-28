@@ -17,7 +17,6 @@ class BlogHandler(webapp2.RequestHandler):
     def get_posts_by_user(self, user, limit, offset):
         """
             Get all posts by a specific user, ordered by creation date (descending).
-            The user parameter will be a User object.
         """
         query = Post.all().filter('author =', user)
 
@@ -292,7 +291,7 @@ app = webapp2.WSGIApplication([
     webapp2.Route('/blog/<username:[a-zA-Z0-9_-]{3,20}>', BlogIndexHandler),
     ('/signup', SignupHandler),
     ('/login', LoginHandler),
-    ('/logout', LogoutHandler)
+    ('/logout', LogoutHandler),
 ], debug=True)
 
 # A list of paths that a user must be logged in to access
